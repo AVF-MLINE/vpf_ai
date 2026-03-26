@@ -1,0 +1,720 @@
+factors:
+  vbo:
+    title: "Вибрационная болезнь общая"
+    labels: ["I", "II", "III", "IV"]
+    task_description: >
+      Ты строгий медицинский классификатор для ВБО. На вход приходит обезличенный
+      компактный payload. Верни только одну метку риска из списка I, II, III, IV.
+      Учитывай стаж контакта, условия труда, жалобы, неврологический осмотр,
+      сопутствующие заболевания, а также дополнительные показатели паллестезиометрии
+      и термометрии, если они есть. Не выдумывай отсутствующие данные.
+    metadata_fields:
+      - source_path: algorithm.group
+        normalized_key: algorithm_group
+        code: alg
+        type: enum
+        required: false
+        enum_values: { I: "I", II: "II", III: "III", IV: "IV" }
+      - source_path: worker.sex
+        normalized_key: sex
+        code: sx
+        type: enum
+        required: false
+        enum_values: { m: "male", f: "female", "1": "male", "0": "female" }
+      - source_path: worker.age
+        normalized_key: age
+        code: age
+        type: integer
+        required: false
+        units: "years"
+      - source_path: worker.contact_years
+        normalized_key: contact_years
+        code: cty
+        type: integer
+        required: true
+        units: "years"
+      - source_path: work_conditions.harm_class
+        normalized_key: harm_class
+        code: whc
+        type: string
+        required: true
+      - source_path: work_conditions.exposure_score
+        normalized_key: exposure_score
+        code: exp
+        type: float
+        required: false
+    fields:
+      - group: complaints
+        source_path: general_neurological_examinations.pain_syndrome_h
+        normalized_key: pain_upper_limbs
+        code: psh
+        type: enum
+        required: false
+        enum_values: { "0": "Нет", "1": "Есть" }
+      - group: complaints
+        source_path: general_neurological_examinations.pain_syndrome_f
+        normalized_key: pain_lower_limbs
+        code: psf
+        type: enum
+        required: false
+        enum_values: { "0": "Нет", "1": "Есть" }
+      - group: complaints
+        source_path: general_neurological_examinations.complaint_h
+        normalized_key: paresthesia_upper_limbs
+        code: cph
+        type: enum
+        required: false
+        enum_values: { "0": "Нет", "1": "Есть" }
+      - group: complaints
+        source_path: general_neurological_examinations.complaint_f
+        normalized_key: paresthesia_lower_limbs
+        code: cpf
+        type: enum
+        required: false
+        enum_values: { "0": "Нет", "1": "Есть" }
+      - group: complaints
+        source_path: general_neurological_examinations.brush_chilliness
+        normalized_key: chilliness_hands
+        code: bch
+        type: enum
+        required: false
+        enum_values: { "0": "Нет", "1": "Есть" }
+      - group: complaints
+        source_path: general_neurological_examinations.feet_chilliness
+        normalized_key: chilliness_feet
+        code: fch
+        type: enum
+        required: false
+        enum_values: { "0": "Нет", "1": "Есть" }
+      - group: complaints
+        source_path: general_neurological_examinations.angiospasm_h
+        normalized_key: hand_angiospasm
+        code: ash
+        type: enum
+        required: false
+        enum_values: { "0": "Нет", "1": "Есть" }
+      - group: neurological_exam
+        source_path: general_neurological_examinations.brush_color
+        normalized_key: brush_color
+        code: bcl
+        type: enum
+        required: true
+        enum_values:
+          "0": "Обычный окрас"
+          "1": "Мраморный окрас"
+          "2": "Мраморно-цианотичный / цианотичный окрас"
+      - group: neurological_exam
+        source_path: general_neurological_examinations.foot_color
+        normalized_key: foot_color
+        code: fcl
+        type: enum
+        required: true
+        enum_values:
+          "0": "Обычный окрас"
+          "1": "Мраморный окрас"
+          "2": "Мраморно-цианотичный / цианотичный окрас"
+      - group: neurological_exam
+        source_path: general_neurological_examinations.hyperhidrosis_palms
+        normalized_key: hyperhidrosis_palms
+        code: hhp
+        type: enum
+        required: false
+        enum_values: { "0": "Нет", "1": "Есть" }
+      - group: neurological_exam
+        source_path: general_neurological_examinations.hyperhidrosis_foot
+        normalized_key: hyperhidrosis_foot
+        code: hhf
+        type: enum
+        required: false
+        enum_values: { "0": "Нет", "1": "Есть" }
+      - group: neurological_exam
+        source_path: general_neurological_examinations.brush_pastiness
+        normalized_key: brush_pastiness
+        code: bps
+        type: enum
+        required: false
+        enum_values: { "0": "Нет", "1": "Есть" }
+      - group: neurological_exam
+        source_path: general_neurological_examinations.white_spot_h
+        normalized_key: white_spot_test
+        code: wsh
+        type: enum
+        required: false
+        enum_values: { "0": "Отрицательный", "1": "Положительный" }
+      - group: neurological_exam
+        source_path: general_neurological_examinations.sample_of_bogolepov_h
+        normalized_key: bogolepov_test
+        code: bog
+        type: enum
+        required: false
+        enum_values: { "0": "Отрицательная", "1": "Положительная" }
+      - group: neurological_exam
+        source_path: general_neurological_examinations.hypalgesia_h
+        normalized_key: upper_limbs_hypesthesia
+        code: hyh
+        type: enum
+        required: false
+        enum_values:
+          "0": "Нет"
+          "1": "Уровень кистей"
+          "2": "Уровень выше кистей"
+      - group: neurological_exam
+        source_path: general_neurological_examinations.hypalgesia_f
+        normalized_key: lower_limbs_hypesthesia
+        code: hyf
+        type: enum
+        required: false
+        enum_values:
+          "0": "Нет"
+          "1": "Уровень стоп"
+          "2": "Уровень выше стоп"
+      - group: anamnesis
+        source_path: general_pathologies.carbohydrate_metabolism
+        normalized_key: carbohydrate_metabolism
+        code: cbm
+        type: enum
+        required: false
+        enum_values:
+          "0": "Нет"
+          "0.5": "Нарушение углеводного обмена натощак"
+          "1": "Сахарный диабет"
+      - group: anamnesis
+        source_path: general_pathologies.lipid_metabolism
+        normalized_key: lipid_metabolism
+        code: lip
+        type: enum
+        required: false
+        enum_values: { "0": "Нет", "0.5": "Есть" }
+      - group: anamnesis
+        source_path: general_pathologies.peripheral_nervous_system
+        normalized_key: peripheral_nervous_system
+        code: pns
+        type: enum
+        required: false
+        enum_values: { "0": "Нет", "0.5": "Есть" }
+      - group: anamnesis
+        source_path: general_pathologies.varicose_veins
+        normalized_key: varicose_veins
+        code: vrv
+        type: enum
+        required: false
+        enum_values: { "0": "Нет", "0.5": "Есть" }
+      - group: pallesthesiometry
+        source_path: pallesthesiometry.upper_limbs_score
+        normalized_key: pallesthesiometry_upper_limbs
+        code: plh
+        type: float
+        required: false
+      - group: pallesthesiometry
+        source_path: pallesthesiometry.lower_limbs_score
+        normalized_key: pallesthesiometry_lower_limbs
+        code: plf
+        type: float
+        required: false
+      - group: thermometry
+        source_path: thermometry.upper_limbs_delta_c
+        normalized_key: thermometry_upper_limbs
+        code: tmh
+        type: float
+        required: false
+        units: "C"
+      - group: thermometry
+        source_path: thermometry.lower_limbs_delta_c
+        normalized_key: thermometry_lower_limbs
+        code: tmf
+        type: float
+        required: false
+        units: "C"
+    samples:
+      - label: "I"
+        text: "f=vbo|alg=I|sx=m|age=34|cty=4|whc=2|exp=1|psh=0|psf=0|cph=0|cpf=0|bch=0|fch=0|ash=0|bcl=0|fcl=0|hhp=0|hhf=0|bps=0|wsh=0|bog=0|hyh=0|hyf=0|cbm=0|lip=0|pns=0|vrv=0"
+      - label: "II"
+        text: "f=vbo|alg=II|sx=f|age=43|cty=9|whc=3.1|exp=2|psh=1|psf=0|cph=1|cpf=0|bch=1|fch=0|ash=0|bcl=1|fcl=0|hhp=0|hhf=0|bps=0|wsh=0|bog=0|hyh=1|hyf=0|cbm=0|lip=0.5|pns=0|vrv=0"
+      - label: "III"
+        text: "f=vbo|alg=III|sx=m|age=51|cty=16|whc=3.2|exp=3|psh=1|psf=1|cph=1|cpf=1|bch=1|fch=1|ash=1|bcl=2|fcl=1|hhp=0|hhf=1|bps=0|wsh=1|bog=1|hyh=1|hyf=1|cbm=0.5|lip=0.5|pns=0|vrv=0.5|plh=1.5|plf=1.2"
+      - label: "IV"
+        text: "f=vbo|alg=IV|sx=m|age=57|cty=24|whc=3.3|exp=4|psh=1|psf=1|cph=1|cpf=1|bch=1|fch=1|ash=1|bcl=2|fcl=2|hhp=1|hhf=1|bps=1|wsh=1|bog=1|hyh=2|hyf=2|cbm=1|lip=0.5|pns=0.5|vrv=0.5|plh=2.8|plf=2.5|tmh=3.2|tmf=4.1"
+
+  vbl:
+    title: "Вибрационная болезнь локальная"
+    labels: ["I", "II", "III", "IV"]
+    task_description: >
+      Ты строгий медицинский классификатор для ВБЛ. На вход приходит обезличенный
+      компактный payload. Верни только одну метку риска из списка I, II, III, IV.
+      Учитывай стаж контакта, условия труда, жалобы, неврологический осмотр и
+      дополнительные показатели паллестезиометрии и термометрии, если они есть.
+      Не выдумывай отсутствующие данные.
+    metadata_fields:
+      - source_path: algorithm.group
+        normalized_key: algorithm_group
+        code: alg
+        type: enum
+        required: false
+        enum_values: { I: "I", II: "II", III: "III", IV: "IV" }
+      - source_path: worker.sex
+        normalized_key: sex
+        code: sx
+        type: enum
+        required: false
+        enum_values: { m: "male", f: "female", "1": "male", "0": "female" }
+      - source_path: worker.age
+        normalized_key: age
+        code: age
+        type: integer
+        required: false
+        units: "years"
+      - source_path: worker.contact_years
+        normalized_key: contact_years
+        code: cty
+        type: integer
+        required: true
+        units: "years"
+      - source_path: work_conditions.harm_class
+        normalized_key: harm_class
+        code: whc
+        type: string
+        required: true
+      - source_path: work_conditions.exposure_score
+        normalized_key: exposure_score
+        code: exp
+        type: float
+        required: false
+    fields:
+      - group: complaints
+        source_path: neurological_examinations.pain_syndrome
+        normalized_key: pain_upper_limbs
+        code: psh
+        type: enum
+        required: false
+        enum_values: { "0": "Нет", "1": "Есть" }
+      - group: complaints
+        source_path: neurological_examinations.complaint
+        normalized_key: paresthesia_upper_limbs
+        code: cph
+        type: enum
+        required: false
+        enum_values: { "0": "Нет", "1": "Есть" }
+      - group: complaints
+        source_path: neurological_examinations.chilliness
+        normalized_key: chilliness_hands
+        code: bch
+        type: enum
+        required: false
+        enum_values: { "0": "Нет", "1": "Есть" }
+      - group: complaints
+        source_path: neurological_examinations.angiospasm
+        normalized_key: hand_angiospasm
+        code: ash
+        type: enum
+        required: false
+        enum_values: { "0": "Нет", "1": "Есть" }
+      - group: neurological_exam
+        source_path: neurological_examinations.brush_color
+        normalized_key: brush_color
+        code: bcl
+        type: enum
+        required: true
+        enum_values:
+          "0": "Обычный окрас"
+          "1": "Мраморный окрас"
+          "2": "Мраморно-цианотичный / цианотичный окрас"
+      - group: neurological_exam
+        source_path: neurological_examinations.foot_color
+        normalized_key: foot_color
+        code: fcl
+        type: enum
+        required: false
+        enum_values:
+          "0": "Обычный окрас"
+          "1": "Мраморный окрас"
+          "2": "Мраморно-цианотичный / цианотичный окрас"
+      - group: neurological_exam
+        source_path: neurological_examinations.hyperhidrosis_palms
+        normalized_key: hyperhidrosis_palms
+        code: hhp
+        type: enum
+        required: false
+        enum_values: { "0": "Нет", "1": "Есть" }
+      - group: neurological_exam
+        source_path: neurological_examinations.hyperhidrosis_foot
+        normalized_key: hyperhidrosis_foot
+        code: hhf
+        type: enum
+        required: false
+        enum_values: { "0": "Нет", "1": "Есть" }
+      - group: neurological_exam
+        source_path: neurological_examinations.brush_pastiness
+        normalized_key: brush_pastiness
+        code: bps
+        type: enum
+        required: false
+        enum_values: { "0": "Нет", "1": "Есть" }
+      - group: neurological_exam
+        source_path: neurological_examinations.white_spot_h
+        normalized_key: white_spot_test
+        code: wsh
+        type: enum
+        required: false
+        enum_values: { "0": "Отрицательный", "1": "Положительный" }
+      - group: neurological_exam
+        source_path: neurological_examinations.sample_of_bogolepov_h
+        normalized_key: bogolepov_test
+        code: bog
+        type: enum
+        required: false
+        enum_values: { "0": "Отрицательная", "1": "Положительная" }
+      - group: neurological_exam
+        source_path: neurological_examinations.hypalgesia_h
+        normalized_key: upper_limbs_hypesthesia
+        code: hyh
+        type: enum
+        required: false
+        enum_values:
+          "0": "Нет"
+          "1": "Уровень кистей"
+          "2": "Уровень выше кистей"
+      - group: pallesthesiometry
+        source_path: pallesthesiometry.upper_limbs_score
+        normalized_key: pallesthesiometry_upper_limbs
+        code: plh
+        type: float
+        required: false
+      - group: thermometry
+        source_path: thermometry.upper_limbs_delta_c
+        normalized_key: thermometry_upper_limbs
+        code: tmh
+        type: float
+        required: false
+        units: "C"
+    samples:
+      - label: "I"
+        text: "f=vbl|alg=I|sx=f|age=31|cty=3|whc=2|exp=1|psh=0|cph=0|bch=0|ash=0|bcl=0|fcl=0|hhp=0|hhf=0|bps=0|wsh=0|bog=0|hyh=0"
+      - label: "II"
+        text: "f=vbl|alg=II|sx=m|age=41|cty=8|whc=3.1|exp=2|psh=1|cph=1|bch=0|ash=0|bcl=1|fcl=0|hhp=0|hhf=0|bps=0|wsh=0|bog=0|hyh=1"
+      - label: "III"
+        text: "f=vbl|alg=III|sx=m|age=49|cty=14|whc=3.2|exp=3|psh=1|cph=1|bch=1|ash=1|bcl=2|fcl=1|hhp=0|hhf=1|bps=0|wsh=1|bog=1|hyh=1|plh=1.7"
+      - label: "IV"
+        text: "f=vbl|alg=IV|sx=m|age=56|cty=22|whc=3.3|exp=4|psh=1|cph=1|bch=1|ash=1|bcl=2|fcl=2|hhp=1|hhf=1|bps=1|wsh=1|bog=1|hyh=2|plh=2.9|tmh=3.4"
+
+  nst:
+    title: "Нейросенсорная тугоухость"
+    labels: ["I", "II", "III", "IV"]
+    task_description: >
+      Ты строгий медицинский классификатор для НСТ. На вход приходит обезличенный
+      компактный payload с аудиометрией и условиями труда. Верни только одну метку
+      риска из списка I, II, III, IV. Основной источник решения — данные по частотам
+      250, 500, 1000, 2000, 4000 и 6000 Гц по обоим ушам. Не выдумывай отсутствующие данные.
+    metadata_fields:
+      - source_path: algorithm.group
+        normalized_key: algorithm_group
+        code: alg
+        type: enum
+        required: false
+        enum_values: { I: "I", II: "II", III: "III", IV: "IV" }
+      - source_path: worker.sex
+        normalized_key: sex
+        code: sx
+        type: enum
+        required: false
+        enum_values: { m: "male", f: "female", "1": "male", "0": "female" }
+      - source_path: worker.age
+        normalized_key: age
+        code: age
+        type: integer
+        required: false
+        units: "years"
+      - source_path: worker.contact_years
+        normalized_key: contact_years
+        code: cty
+        type: integer
+        required: true
+        units: "years"
+      - source_path: work_conditions.harm_class
+        normalized_key: harm_class
+        code: whc
+        type: string
+        required: true
+      - source_path: work_conditions.noise_level_db
+        normalized_key: noise_level_db
+        code: ndb
+        type: float
+        required: false
+        units: "dB"
+    fields:
+      - group: audiometry
+        source_path: audiometry.right_250
+        normalized_key: right_250
+        code: r250
+        type: integer
+        required: true
+        units: "dB"
+      - group: audiometry
+        source_path: audiometry.right_500
+        normalized_key: right_500
+        code: r500
+        type: integer
+        required: true
+        units: "dB"
+      - group: audiometry
+        source_path: audiometry.right_1000
+        normalized_key: right_1000
+        code: r1k
+        type: integer
+        required: true
+        units: "dB"
+      - group: audiometry
+        source_path: audiometry.right_2000
+        normalized_key: right_2000
+        code: r2k
+        type: integer
+        required: true
+        units: "dB"
+      - group: audiometry
+        source_path: audiometry.right_4000
+        normalized_key: right_4000
+        code: r4k
+        type: integer
+        required: true
+        units: "dB"
+      - group: audiometry
+        source_path: audiometry.right_6000
+        normalized_key: right_6000
+        code: r6k
+        type: integer
+        required: true
+        units: "dB"
+      - group: audiometry
+        source_path: audiometry.left_250
+        normalized_key: left_250
+        code: l250
+        type: integer
+        required: true
+        units: "dB"
+      - group: audiometry
+        source_path: audiometry.left_500
+        normalized_key: left_500
+        code: l500
+        type: integer
+        required: true
+        units: "dB"
+      - group: audiometry
+        source_path: audiometry.left_1000
+        normalized_key: left_1000
+        code: l1k
+        type: integer
+        required: true
+        units: "dB"
+      - group: audiometry
+        source_path: audiometry.left_2000
+        normalized_key: left_2000
+        code: l2k
+        type: integer
+        required: true
+        units: "dB"
+      - group: audiometry
+        source_path: audiometry.left_4000
+        normalized_key: left_4000
+        code: l4k
+        type: integer
+        required: true
+        units: "dB"
+      - group: audiometry
+        source_path: audiometry.left_6000
+        normalized_key: left_6000
+        code: l6k
+        type: integer
+        required: true
+        units: "dB"
+      - group: ent_exam
+        source_path: otolaryngologist_examination.findings_score
+        normalized_key: ent_findings_score
+        code: ent
+        type: float
+        required: false
+    samples:
+      - label: "I"
+        text: "f=nst|alg=I|sx=m|age=28|cty=3|whc=2|ndb=82|r250=5|r500=5|r1k=5|r2k=10|r4k=10|r6k=10|l250=5|l500=5|l1k=5|l2k=10|l4k=10|l6k=10"
+      - label: "II"
+        text: "f=nst|alg=II|sx=f|age=39|cty=8|whc=3.1|ndb=88|r250=10|r500=10|r1k=10|r2k=12|r4k=20|r6k=22|l250=10|l500=10|l1k=12|l2k=12|l4k=18|l6k=20"
+      - label: "III"
+        text: "f=nst|alg=III|sx=m|age=47|cty=14|whc=3.2|ndb=92|r250=10|r500=10|r1k=15|r2k=20|r4k=34|r6k=36|l250=10|l500=12|l1k=15|l2k=22|l4k=32|l6k=35|ent=1"
+      - label: "IV"
+        text: "f=nst|alg=IV|sx=m|age=56|cty=23|whc=3.3|ndb=96|r250=15|r500=18|r1k=22|r2k=30|r4k=42|r6k=48|l250=15|l500=18|l1k=24|l2k=32|l4k=44|l6k=50|ent=1.5"
+
+  hobl:
+    title: "Хроническая обструктивная болезнь лёгких"
+    labels: ["I", "II", "III", "IV"]
+    task_description: >
+      Ты строгий медицинский классификатор для ХОБЛ. На вход приходит обезличенный
+      компактный payload. Верни только одну метку риска из списка I, II, III, IV.
+      Учитывай стаж, класс условий труда, анамнез, жалобы, осмотр терапевта и спирометрию.
+      Не выдумывай отсутствующие данные.
+    metadata_fields:
+      - source_path: algorithm.group
+        normalized_key: algorithm_group
+        code: alg
+        type: enum
+        required: false
+        enum_values: { I: "I", II: "II", III: "III", IV: "IV" }
+      - source_path: worker.sex
+        normalized_key: sex
+        code: sx
+        type: enum
+        required: false
+        enum_values: { m: "male", f: "female", "1": "male", "0": "female" }
+      - source_path: worker.age
+        normalized_key: age
+        code: age
+        type: integer
+        required: false
+        units: "years"
+      - source_path: worker.contact_years
+        normalized_key: contact_years
+        code: cty
+        type: integer
+        required: true
+        units: "years"
+      - source_path: work_conditions.harm_class
+        normalized_key: harm_class
+        code: whc
+        type: string
+        required: true
+    fields:
+      - group: anamnesis
+        source_path: anamnesis_respiratories.smoke_idx
+        normalized_key: smoking_pack_years_score
+        code: smk
+        type: enum
+        required: true
+        enum_values:
+          "0": "Менее 10 пачка/лет"
+          "1": "10-20 пачка/лет"
+          "2": "Более 20 пачка/лет"
+      - group: anamnesis
+        source_path: anamnesis_respiratories.crises_by_year
+        normalized_key: exacerbations_per_year
+        code: cry
+        type: enum
+        required: true
+        enum_values:
+          "0": "0"
+          "1": "1-2"
+          "2": "3 и более"
+      - group: complaints
+        source_path: index_mmrcs.has_cough
+        normalized_key: has_cough
+        code: cgh
+        type: enum
+        required: false
+        enum_values: { "0": "Нет", "0.5": "Есть" }
+      - group: complaints
+        source_path: index_mmrcs.has_phlegm
+        normalized_key: has_phlegm
+        code: phg
+        type: enum
+        required: false
+        enum_values: { "0": "Нет", "0.5": "Есть" }
+      - group: complaints
+        source_path: index_mmrcs.degree
+        normalized_key: mmrc_degree
+        code: mmr
+        type: enum
+        required: true
+        enum_values:
+          "0": "Не беспокоит, кроме интенсивной нагрузки"
+          "0.5": "При быстрой ходьбе или подъёме"
+          "1": "Остановка при ходьбе своим темпом"
+          "1.5": "Остановка через 100 м или несколько минут"
+          "2": "Невозможно выйти из дома или при одевании"
+      - group: complaints
+        source_path: index_mmrcs.cat_points
+        normalized_key: cat_points
+        code: cat
+        type: enum
+        required: true
+        enum_values:
+          "0": "От 0 до 10 баллов"
+          "1": "От 10 до 20 баллов"
+          "2": "Более 20 баллов"
+      - group: therapist_exam
+        source_path: pulmonologists.auscultation_breath_type
+        normalized_key: breath_type
+        code: abt
+        type: enum
+        required: false
+        enum_values:
+          "0": "Везикулярное"
+          "0.5": "С жёстким оттенком"
+          "1": "Жёсткое"
+      - group: therapist_exam
+        source_path: pulmonologists.auscultation_rales
+        normalized_key: rales
+        code: arl
+        type: enum
+        required: false
+        enum_values:
+          "0": "Хрипов нет"
+          "0.5": "Сухие единичные при форс. выдохе"
+          "1": "Сухие при спокойном дыхании"
+      - group: therapist_exam
+        source_path: pulmonologists.analyse_rib_cage
+        normalized_key: rib_cage_excursion
+        code: rib
+        type: enum
+        required: false
+        enum_values:
+          "0": "Более 10 см"
+          "0.5": "6-9 см"
+          "1": "5 см и менее"
+      - group: therapist_exam
+        source_path: pulmonologists.analyse_pulmonary
+        normalized_key: pulmonary_apex_position
+        code: apl
+        type: enum
+        required: false
+        enum_values:
+          "0": "Ниже ключицы"
+          "0.5": "Уровень ключицы при ИМТ<30 кг/м²"
+          "1": "Выше ключицы при ИМТ<30 кг/м²"
+      - group: spirometry
+        source_path: external_breathings.fev1
+        normalized_key: fev1
+        code: fev1
+        type: float
+        required: false
+      - group: spirometry
+        source_path: external_breathings.fvc
+        normalized_key: fvc
+        code: fvc
+        type: float
+        required: false
+      - group: spirometry
+        source_path: external_breathings.spirometry
+        normalized_key: tiffno_index
+        code: spr
+        type: enum
+        required: true
+        enum_values:
+          "0": "Более 0,8"
+          "0.5": "0,76-0,8"
+          "1": "0,7-0,75"
+          "1.5": "Менее 0,7"
+      - group: spirometry
+        source_path: external_breathings.spirometry_dynamics
+        normalized_key: fev1_yearly_decline
+        code: spd
+        type: enum
+        required: true
+        enum_values:
+          "0": "Менее чем на 150 мл"
+          "0.5": "Более чем на 150 мл"
+          "na": "Нет данных"
+    samples:
+      - label: "I"
+        text: "f=hobl|alg=I|sx=f|age=33|cty=4|whc=2|smk=0|cry=0|cgh=0|phg=0|mmr=0|cat=0|abt=0|arl=0|rib=0|apl=0|spr=0|spd=0"
+      - label: "II"
+        text: "f=hobl|alg=II|sx=m|age=42|cty=9|whc=3.1|smk=1|cry=0|cgh=0.5|phg=0|mmr=0.5|cat=1|abt=0.5|arl=0.5|rib=0.5|apl=0|spr=0.5|spd=0"
+      - label: "III"
+        text: "f=hobl|alg=III|sx=m|age=50|cty=15|whc=3.2|smk=1|cry=1|cgh=0.5|phg=0.5|mmr=1|cat=1|abt=1|arl=0.5|rib=0.5|apl=0.5|spr=1|spd=0.5"
+      - label: "IV"
+        text: "f=hobl|alg=IV|sx=m|age=58|cty=24|whc=3.3|smk=2|cry=2|cgh=0.5|phg=0.5|mmr=1.5|cat=2|abt=1|arl=1|rib=1|apl=1|spr=1.5|spd=0.5"
