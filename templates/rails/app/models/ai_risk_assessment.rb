@@ -9,7 +9,7 @@ class AiRiskAssessment < ApplicationRecord
   validates :factor_code, presence: true, inclusion: { in: FACTOR_CODES }
   validates :status, presence: true, inclusion: { in: STATUSES }
   validates :factor_code, uniqueness: { scope: :conclusion_id }
-  validates :ai_group, inclusion: { in: %w[I II III IV] }, allow_nil: true
+  validates :ai_group, inclusion: { in: %w[I II III IV V] }, allow_nil: true
 
   scope :ordered, -> { order(:factor_code) }
 

@@ -8,7 +8,7 @@ class FactorRegistryTest < Minitest::Test
 
     assert_equal %w[hobl nst vbl vbo], registry.all.map(&:code).sort
     assert_equal "Вибрационная болезнь общая", registry.fetch(:vbo).title
-    assert_equal ["I", "II", "III", "IV"], registry.fetch(:nst).labels
+    assert_equal ["I", "II", "III", "IV", "V"], registry.fetch(:nst).labels
   end
 
   def test_schema_exposes_mapping_rows

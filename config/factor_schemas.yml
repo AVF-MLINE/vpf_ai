@@ -1,10 +1,10 @@
 factors:
   vbo:
     title: "Вибрационная болезнь общая"
-    labels: ["I", "II", "III", "IV"]
+    labels: ["I", "II", "III", "IV", "V"]
     task_description: >
       Ты строгий медицинский классификатор для ВБО. На вход приходит обезличенный
-      компактный payload. Верни только одну метку риска из списка I, II, III, IV.
+      компактный payload. Верни только одну метку риска из списка I, II, III, IV, V.
       Учитывай стаж контакта, условия труда, жалобы, неврологический осмотр,
       сопутствующие заболевания, а также дополнительные показатели паллестезиометрии
       и термометрии, если они есть. Не выдумывай отсутствующие данные.
@@ -14,7 +14,7 @@ factors:
         code: alg
         type: enum
         required: false
-        enum_values: { I: "I", II: "II", III: "III", IV: "IV" }
+        enum_values: { I: "I", II: "II", III: "III", IV: "IV", V: "V" }
       - source_path: worker.sex
         normalized_key: sex
         code: sx
@@ -234,13 +234,15 @@ factors:
         text: "f=vbo|alg=III|sx=m|age=51|cty=16|whc=3.2|exp=3|psh=1|psf=1|cph=1|cpf=1|bch=1|fch=1|ash=1|bcl=2|fcl=1|hhp=0|hhf=1|bps=0|wsh=1|bog=1|hyh=1|hyf=1|cbm=0.5|lip=0.5|pns=0|vrv=0.5|plh=1.5|plf=1.2"
       - label: "IV"
         text: "f=vbo|alg=IV|sx=m|age=57|cty=24|whc=3.3|exp=4|psh=1|psf=1|cph=1|cpf=1|bch=1|fch=1|ash=1|bcl=2|fcl=2|hhp=1|hhf=1|bps=1|wsh=1|bog=1|hyh=2|hyf=2|cbm=1|lip=0.5|pns=0.5|vrv=0.5|plh=2.8|plf=2.5|tmh=3.2|tmf=4.1"
+      - label: "V"
+        text: "f=vbo|alg=V|sx=m|age=60|cty=29|whc=3.4|exp=5|psh=1|psf=1|cph=1|cpf=1|bch=1|fch=1|ash=1|bcl=2|fcl=2|hhp=1|hhf=1|bps=1|wsh=1|bog=1|hyh=2|hyf=2|cbm=1|lip=1|pns=0.5|vrv=0.5|plh=3.6|plf=3.3|tmh=4.5|tmf=5.1"
 
   vbl:
     title: "Вибрационная болезнь локальная"
-    labels: ["I", "II", "III", "IV"]
+    labels: ["I", "II", "III", "IV", "V"]
     task_description: >
       Ты строгий медицинский классификатор для ВБЛ. На вход приходит обезличенный
-      компактный payload. Верни только одну метку риска из списка I, II, III, IV.
+      компактный payload. Верни только одну метку риска из списка I, II, III, IV, V.
       Учитывай стаж контакта, условия труда, жалобы, неврологический осмотр и
       дополнительные показатели паллестезиометрии и термометрии, если они есть.
       Не выдумывай отсутствующие данные.
@@ -250,7 +252,7 @@ factors:
         code: alg
         type: enum
         required: false
-        enum_values: { I: "I", II: "II", III: "III", IV: "IV" }
+        enum_values: { I: "I", II: "II", III: "III", IV: "IV", V: "V" }
       - source_path: worker.sex
         normalized_key: sex
         code: sx
@@ -395,14 +397,16 @@ factors:
         text: "f=vbl|alg=III|sx=m|age=49|cty=14|whc=3.2|exp=3|psh=1|cph=1|bch=1|ash=1|bcl=2|fcl=1|hhp=0|hhf=1|bps=0|wsh=1|bog=1|hyh=1|plh=1.7"
       - label: "IV"
         text: "f=vbl|alg=IV|sx=m|age=56|cty=22|whc=3.3|exp=4|psh=1|cph=1|bch=1|ash=1|bcl=2|fcl=2|hhp=1|hhf=1|bps=1|wsh=1|bog=1|hyh=2|plh=2.9|tmh=3.4"
+      - label: "V"
+        text: "f=vbl|alg=V|sx=m|age=60|cty=27|whc=3.4|exp=5|psh=1|cph=1|bch=1|ash=1|bcl=2|fcl=2|hhp=1|hhf=1|bps=1|wsh=1|bog=1|hyh=2|plh=3.8|tmh=4.6"
 
   nst:
     title: "Нейросенсорная тугоухость"
-    labels: ["I", "II", "III", "IV"]
+    labels: ["I", "II", "III", "IV", "V"]
     task_description: >
       Ты строгий медицинский классификатор для НСТ. На вход приходит обезличенный
       компактный payload с аудиометрией и условиями труда. Верни только одну метку
-      риска из списка I, II, III, IV. Основной источник решения — данные по частотам
+      риска из списка I, II, III, IV, V. Основной источник решения — данные по частотам
       250, 500, 1000, 2000, 4000 и 6000 Гц по обоим ушам. Не выдумывай отсутствующие данные.
     metadata_fields:
       - source_path: algorithm.group
@@ -410,7 +414,7 @@ factors:
         code: alg
         type: enum
         required: false
-        enum_values: { I: "I", II: "II", III: "III", IV: "IV" }
+        enum_values: { I: "I", II: "II", III: "III", IV: "IV", V: "V" }
       - source_path: worker.sex
         normalized_key: sex
         code: sx
@@ -540,13 +544,15 @@ factors:
         text: "f=nst|alg=III|sx=m|age=47|cty=14|whc=3.2|ndb=92|r250=10|r500=10|r1k=15|r2k=20|r4k=34|r6k=36|l250=10|l500=12|l1k=15|l2k=22|l4k=32|l6k=35|ent=1"
       - label: "IV"
         text: "f=nst|alg=IV|sx=m|age=56|cty=23|whc=3.3|ndb=96|r250=15|r500=18|r1k=22|r2k=30|r4k=42|r6k=48|l250=15|l500=18|l1k=24|l2k=32|l4k=44|l6k=50|ent=1.5"
+      - label: "V"
+        text: "f=nst|alg=V|sx=m|age=61|cty=30|whc=3.4|ndb=100|r250=20|r500=24|r1k=30|r2k=40|r4k=58|r6k=64|l250=22|l500=24|l1k=32|l2k=42|l4k=60|l6k=66|ent=2"
 
   hobl:
     title: "Хроническая обструктивная болезнь лёгких"
-    labels: ["I", "II", "III", "IV"]
+    labels: ["I", "II", "III", "IV", "V"]
     task_description: >
       Ты строгий медицинский классификатор для ХОБЛ. На вход приходит обезличенный
-      компактный payload. Верни только одну метку риска из списка I, II, III, IV.
+      компактный payload. Верни только одну метку риска из списка I, II, III, IV, V.
       Учитывай стаж, класс условий труда, анамнез, жалобы, осмотр терапевта и спирометрию.
       Не выдумывай отсутствующие данные.
     metadata_fields:
@@ -555,7 +561,7 @@ factors:
         code: alg
         type: enum
         required: false
-        enum_values: { I: "I", II: "II", III: "III", IV: "IV" }
+        enum_values: { I: "I", II: "II", III: "III", IV: "IV", V: "V" }
       - source_path: worker.sex
         normalized_key: sex
         code: sx
@@ -718,3 +724,5 @@ factors:
         text: "f=hobl|alg=III|sx=m|age=50|cty=15|whc=3.2|smk=1|cry=1|cgh=0.5|phg=0.5|mmr=1|cat=1|abt=1|arl=0.5|rib=0.5|apl=0.5|spr=1|spd=0.5"
       - label: "IV"
         text: "f=hobl|alg=IV|sx=m|age=58|cty=24|whc=3.3|smk=2|cry=2|cgh=0.5|phg=0.5|mmr=1.5|cat=2|abt=1|arl=1|rib=1|apl=1|spr=1.5|spd=0.5"
+      - label: "V"
+        text: "f=hobl|alg=V|sx=m|age=62|cty=31|whc=3.4|smk=2|cry=2|cgh=0.5|phg=0.5|mmr=2|cat=2|abt=1|arl=1|rib=1|apl=1|spr=1.5|spd=0.5"
